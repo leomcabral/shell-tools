@@ -22,5 +22,5 @@ fi
 RESULT=$($CURL_CMD "${URL_SEARCH}q=${QUERY}")
 
 # Format result
-JQ_FORMAT="{dep: .response.docs[].id, ver: .response.docs[].latestVersion} | join(\" \")"
-echo "$RESULT" | jq -r "${JQ_FORMAT}" | sort
+JQ_FORMAT="[.response.docs[] | {group: .g, artifact: .a, version: .latestVersion}] | sort_by(.group)"
+echo "$RESULT" | jq -r "${JQ_FORMAT}" #| sort
